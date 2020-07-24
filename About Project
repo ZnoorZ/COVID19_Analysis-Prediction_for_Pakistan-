@@ -1,0 +1,81 @@
+COVID-19: Global EDA and TS Prediction for Pakistan
+
+What is COVID-19?
+COVID-19 or novel Corona virus first appeared in November 2019 in the city of Wuhan, China. 
+It kept spreading from person to person within China and then it travelled to other countries through its host travelers across the globe. 
+Currently, this global pandemic has gained the attention of all the leaders, doctors and scientists. Even the research organisations and 
+Data Scientists are not able to ignore this biological creature.
+
+COVID-19 as a Time Series problem: The coronavirus disease 2019 (COVID-19) has become a public health emergency of international concern affecting 261 countries 
+and territories around the globe. As of May 14, 2020, it has caused a pandemic outbreak with 4.5M confirmed infections and more than 300K reported deaths worldwide. 
+The forecasting models that can generate short-term or long-term forecasts of the number of daily confirmed cases certainly depends on previous trend and time series data 
+thus making it a time series problem.
+
+Milestone for TSP semester project:
+The project milestone for this subject is to perform EDA on Global data and time series prediction for Pakistan only.
+
+Other approaches used for this problem:
+1. Autoregressive Integrated Moving Average (ARIMA) model
+2. Generalized Linear Model (GLM)
+3. Random Forest
+4. SIR (Susceptible – Infected – Removed) model and it’s versions.
+Above are some of the models/algorithms that have been used for the same project.
+
+My approach: SIRD I’ve used SIRD model. It’s an extended version of SIR. Basically, The SIR model is based on the dynamics of immunity and transmission among population. 
+It is a compartmental model. It separates the population into several compartments. This is a mostly used model to study the behavior of an epidemic. When combined with 
+time series data this approach is called the TS-SIR (or sometimes TSIR) model.
+• S - Susceptible is a group of people who are vulnerable to exposure with infectious people. 
+• I - infectious represents the infected people 
+• R - Recovered/ Removed people get immunity so that they are not susceptible to the same illness anymore 
+• D – Dead people who died due to the epidemic This Model also has other versions of it like SEIR (Considering the Exposed population). 
+
+Important SIRD time-dependent variables:
+➢ N: total population
+➢ S(t): number of people susceptible on day t
+➢ I(t): number of people infected on day t
+➢ R(t): number of people recovered on day t
+➢ D(t): number of people dead on day t
+➢ β: expected amount of people an infected person infects per day
+➢ D: number of days an infected person has and can spread the disease
+➢ γ: the proportion of infected recovering per day (γ = 1/D)
+➢ α: fatality rate
+➢ ρ: rate at which people die (= 1/days from infected until death)
+
+Ordinary Differential Equations (ODES) for SIRD:
+These ODEs are based on the change on day t. 
+* S’(t) = - β ⋅ I(t) ⋅ S(t) / N 
+* R’(t) = γ ⋅ (1-α) ⋅ I(t) 
+* I’(t) = β ⋅ I(t) ⋅ S(t) / N - γ ⋅ (1-α) ⋅ I(t) - ρ ⋅ α ⋅ I(t) 
+* D’(t) = ρ ⋅ α ⋅ I(t)
+
+Datasets Used:
+1- COVID-19 Dataset prepared and formatted by Johns Hopkins University (https://github.com/CSSEGISandData/COVID-19)
+2- Cleaned dataset (Worldwide and USA county-wise) –updated every 24 hours (https://www.kaggle.com/imdevskp/corona-virus-report )
+3- Population by country 2020 dataset (https://www.kaggle.com/tanuprabhu/population-by-country-2020)
+4- Pakistan Corona Virus City-wise dataset (https://www.kaggle.com/zusmani/pakistan-corona-virus-citywise-data)
+
+Feature Selection:
+1- Date, Confirmed, Deaths, Recovered, Country and State attributes from “Cleaned dataset for worldwide and USA county-wise cases”.
+2- Population and country attributes from “Population by country 2020” dataset
+3- Date, Cases, Deaths, Recovered and City
+
+Columns transformed for SIRD equations: 
+* comp_df_pk['D'] = comp_df_pk['deaths'] 
+* comp_df_pk['R'] = comp_df_pk['recovered'] 
+* comp_df_pk['I'] = comp_df_pk['confirmed']- comp_df_pk['R'] - comp_df_pk['D'] 
+* comp_df_pk['S'] = comp_df_pk['population']-comp_df_pk['confirmed']
+
+Conclusion: 
+Our model has predicted approximately 700K cases in next 2 months after the month of May if people continued the violation of social distancing. 
+However, this model is far away from the real-world scenario. Many factors affecting the spread of disease (i.e. proportion of population by age, 
+no. of ICU beds and ventilators available, lockdown periods etc) must also be incorporated for better results.
+
+References and Acknowledgements: 
+Data: 
+* Novel Coronavirus (COVID19) Cases, provided by JHU CSSE: https://github.com/CSSEGISandData/COVID-19 
+* COVID-19 Complete Dataset (Updated every 24hrs): https://www.kaggle.com/imdevskp/corona-virus-report 
+* Population by country -2020: https://www.kaggle.com/tanuprabhu/population-by-country-2020
+* Pakistan City wise COVID-19 data: https://www.kaggle.com/zusmani/pakistan-corona-virus-citywise-data
+
+Notebooks: 
+COVID Global Forecast SIR + XGBoost (https://www.kaggle.com/kaniya/covid-global-forecast-sir-xgboost/notebook)
